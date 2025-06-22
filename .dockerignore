@@ -1,0 +1,53 @@
+# Git
+.git
+.gitignore
+
+# Documentación
+README.md
+*.md
+
+# Archivos de entorno (no incluir en la imagen)
+.env
+.env.local
+.env.example
+
+# Archivos de desarrollo
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de respaldo
+*.backup
+*.bak
+*.tmp
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de test
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Archivos de build (si los hubiera)
+dist/
+build/
+
+# Archivos de configuración local
+config.local.js
+
+# Logs
+logs/
+*.log
+
+# Archivos temporales
+temp/
+tmp/
