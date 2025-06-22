@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tickets</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Vista Principal de Compra -->
+        <div id="mainView" class="view active">
+            <header>
+                <h1 id="appTitle">Sistema de Tickets</h1>
+                <div id="activeOrderBadge" class="order-badge hidden">
+                    <span class="badge-text">Pedido activo</span>
+                </div>
+            </header>
+
+            <!-- Sección de Tickets -->
+            <div id="ticketsSection" class="tickets-grid">
+                <!-- Los tickets se generan dinámicamente -->
+            </div>
+
+            <!-- Carrito -->
+            <div id="cartSection" class="cart-section">
+                <div class="cart-items" id="cartItems">
+                    <!-- Items del carrito se generan dinámicamente -->
+                </div>
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">0€</span>
+                </div>
+                <button id="checkoutBtn" class="btn btn-primary" disabled>
+                    Pagar con tarjeta
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista de Pedido Activo -->
+        <div id="orderView" class="view">
+            <header>
+                <h1>Tu Pedido</h1>
+                <button class="btn-back" onclick="volverAInicio()">← Volver</button>
+            </header>
+            
+            <div class="order-container">
+                <div class="order-code-display">
+                    <h2>Código de pedido</h2>
+                    <div class="code-box" id="orderCode">
+                        <!-- Código del pedido -->
+                    </div>
+                    <p class="instructions">Muestra este código al personal</p>
+                </div>
+
+                <div class="order-details" id="orderDetails">
+                    <!-- Detalles del pedido -->
+                </div>
+
+                <!-- Zona de validación (solo visible para el personal) -->
+                <div id="validationZone" class="validation-zone">
+                    <h3>Validación del Personal</h3>
+                    <input type="number" 
+                           id="securityCode" 
+                           placeholder="Código de seguridad (2 dígitos)"
+                           maxlength="2"
+                           pattern="[0-9]{2}">
+                    
+                    <div id="staffButtons" class="staff-buttons">
+                        <!-- Botones del personal se generan dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista de Administración -->
+        <div id="adminView" class="view">
+            <header>
+                <h1>Panel de Administración</h1>
+                <button class="btn-back" onclick="salirDeAdmin()">← Salir</button>
+            </header>
+
+            <div class="admin-container">
+                <!-- Configuración de Tickets -->
+                <section class="admin-section">
+                    <h2>Configurar Tickets</h2>
+                    <div id="ticketConfig" class="config-grid">
+                        <!-- Configuración de tickets -->
+                    </div>
+                    <button onclick="guardarTickets()" class="btn btn-success">
+                        Guardar Tickets
+                    </button>
+                </section>
+
+                <!-- Configuración de Personal -->
+                <section class="admin-section">
+                    <h2>Configurar Personal</h2>
+                    <div id="staffConfig" class="config-grid">
+                        <!-- Configuración de personal -->
+                    </div>
+                    <button onclick="agregarPersonal()" class="btn btn-secondary">
+                        + Agregar Personal
+                    </button>
+                    <button onclick="guardarPersonal()" class="btn btn-success">
+                        Guardar Personal
+                    </button>
+                </section>
+
+                <!-- Configuración General -->
+                <section class="admin-section">
+                    <h2>Configuración General</h2>
+                    <div class="config-item">
+                        <label>Título de la App:</label>
+                        <input type="text" id="configAppTitle" placeholder="Nombre del negocio">
+                    </div>
+                    <div class="config-item">
+                        <label>Código Admin:</label>
+                        <input type="text" id="configAdminCode" placeholder="Nuevo código admin">
+                    </div>
+                    <div class="config-item">
+                        <label>Código de Seguridad Personal:</label>
+                        <input type="text" id="configSecurityCode" placeholder="2 dígitos">
+                    </div>
+                    <button onclick="guardarConfigGeneral()" class="btn btn-success">
+                        Guardar Configuración
+                    </button>
+                </section>
+
+                <!-- Estadísticas -->
+                <section class="admin-section">
+                    <h2>Estadísticas del Día</h2>
+                    <div id="dailyStats" class="stats-grid">
+                        <!-- Estadísticas diarias -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Modal de procesando -->
+        <div id="loadingModal" class="modal">
+            <div class="modal-content">
+                <div class="spinner"></div>
+                <p>Procesando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="env.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
