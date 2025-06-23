@@ -44,24 +44,21 @@ body {
     to { opacity: 1; }
 }
 
-/* Header - Nuevo diseño con gradiente */
+/* Header */
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Título con estilo mejorado */
 h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 24px;
+    font-weight: 600;
 }
 
 /* Botones */
@@ -125,91 +122,58 @@ h1 {
 }
 
 .btn-back {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: white;
+    color: #1d4ed8;
+    border: 2px solid #1d4ed8;
     padding: 8px 16px;
     font-size: 14px;
-    backdrop-filter: blur(10px);
 }
 
 .btn-back:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: #1d4ed8;
+    color: white;
 }
 
 /* Grid de Tickets */
 .tickets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 30px;
 }
 
-/* Ticket Cards - Nuevo diseño moderno */
 .ticket-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 16px;
-    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    box-shadow: var(--shadow);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     border: 2px solid transparent;
-    position: relative;
-    overflow: hidden;
-}
-
-.ticket-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-    transform: rotate(45deg);
-    transition: all 0.6s;
-    opacity: 0;
-}
-
-.ticket-card:hover::before {
-    opacity: 1;
-    animation: shine 0.6s ease-in-out;
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .ticket-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
 }
 
 .ticket-card.selected {
-    border-color: #667eea;
-    background: linear-gradient(145deg, #f0f4ff 0%, #e6eeff 100%);
+    border-color: var(--primary-color);
+    background: #eff6ff;
 }
 
-/* Ticket Names - Color mejorado */
 .ticket-name {
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 8px;
-    color: #4c5563;
-    font-size: 16px;
-    letter-spacing: -0.025em;
+    color: var(--dark-color);
 }
 
 .ticket-price {
-    font-size: 26px;
-    color: #667eea;
+    font-size: 24px;
+    color: var(--primary-color);
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .ticket-quantity {
@@ -224,9 +188,9 @@ h1 {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 2px solid #667eea;
+    border: 2px solid #1d4ed8;
     background: white;
-    color: #667eea;
+    color: #1d4ed8;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -237,7 +201,7 @@ h1 {
 }
 
 .quantity-btn:hover {
-    background: #667eea;
+    background: #1d4ed8;
     color: white;
 }
 
