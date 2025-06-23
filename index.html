@@ -15,58 +15,76 @@
                 <h1 id="appTitle">Sistema de Tickets</h1>
             </header>
 
-            <!-- Sección de Tickets -->
-            <div id="ticketsSection" class="tickets-grid">
-                <!-- Los tickets se generan dinámicamente -->
-            </div>
-
-            <!-- Carrito y Pedido Activo -->
-            <div id="cartSection" class="cart-section">
-                <!-- Zona del carrito (visible cuando NO hay pedido activo) -->
-                <div id="cartZone" class="cart-zone">
-                    <div class="cart-items" id="cartItems">
-                        <!-- Items del carrito se generan dinámicamente -->
+            <div class="main-grid">
+                <!-- Panel Izquierdo - Selección de Tickets -->
+                <div class="left-panel">
+                    <h2 class="section-title">
+                        <span class="state-indicator"></span>
+                        Selecciona tus tickets
+                    </h2>
+                    <div id="ticketsSection" class="tickets-grid">
+                        <!-- Los tickets se generan dinámicamente -->
                     </div>
-                    <div class="cart-total">
-                        <span>Total:</span>
-                        <span id="cartTotal">0€</span>
-                    </div>
-                    <button id="checkoutBtn" class="btn btn-primary" disabled>
-                        Pagar con tarjeta
-                    </button>
                 </div>
 
-                <!-- Zona del pedido activo (visible cuando hay pedido activo) -->
-                <div id="orderZone" class="order-zone hidden">
-                    <div class="order-code-display">
-                        <h3>Tu pedido está listo</h3>
-                        <div class="code-box" id="orderCode">
-                            <!-- Código del pedido -->
+                <!-- Panel Derecho - Estados dinámicos -->
+                <div class="right-panel">
+                    <div class="panel-card">
+                        <!-- Estado: Carrito -->
+                        <div id="cartState" class="cart-state active">
+                            <div class="panel-header">
+                                <h3 class="panel-title">
+                                    🛒 Tu Carrito
+                                </h3>
+                            </div>
+                            
+                            <div class="cart-items" id="cartItems">
+                                <div class="cart-empty">Carrito vacío</div>
+                            </div>
+                            
+                            <div class="cart-total">
+                                <span>Total:</span>
+                                <span id="cartTotal">0€</span>
+                            </div>
+                            
+                            <button id="checkoutBtn" class="btn btn-primary" disabled>
+                                💳 Pagar con tarjeta
+                            </button>
                         </div>
-                        <p class="instructions">Muestra este código al personal</p>
-                    </div>
 
-                    <div class="order-details" id="orderDetails">
-                        <!-- Detalles del pedido -->
-                    </div>
+                        <!-- Estado: Pedido Activo -->
+                        <div id="orderState" class="order-state">
+                            <div class="code-display">
+                                <h3>✅ Tu pedido está listo</h3>
+                                <div class="order-code" id="orderCode">
+                                    <!-- Código del pedido -->
+                                </div>
+                                <p class="instructions">Muestra este código al personal</p>
+                            </div>
 
-                    <!-- Zona de validación (solo visible para el personal) -->
-                    <div id="validationZone" class="validation-zone">
-                        <h3>Validación del Personal</h3>
-                        <input type="number" 
-                               id="securityCode" 
-                               placeholder="Código de seguridad (2 dígitos)"
-                               maxlength="2"
-                               pattern="[0-9]{2}">
-                        
-                        <div id="staffButtons" class="staff-buttons">
-                            <!-- Botones del personal se generan dinámicamente -->
+                            <div id="orderDetails" class="order-details">
+                                <!-- Detalles del pedido -->
+                            </div>
+
+                            <!-- Zona de validación (solo visible para el personal) -->
+                            <div class="validation-section">
+                                <h4>👤 Validación del Personal</h4>
+                                <input type="number" 
+                                       id="securityCode" 
+                                       placeholder="Código de seguridad (2 dígitos)"
+                                       maxlength="2"
+                                       pattern="[0-9]{2}">
+                                
+                                <div id="staffButtons" class="staff-grid">
+                                    <!-- Botones del personal se generan dinámicamente -->
+                                </div>
+                            </div>
+
+                            <button class="btn btn-danger" onclick="cancelarPedido()">
+                                ❌ Cancelar pedido
+                            </button>
                         </div>
                     </div>
-
-                    <button class="btn btn-secondary" onclick="cancelarPedido()">
-                        Cancelar pedido
-                    </button>
                 </div>
             </div>
         </div>
@@ -139,6 +157,30 @@
             <div class="modal-content">
                 <div class="spinner"></div>
                 <p>Procesando...</p>
+            </div>
+        </div>
+
+        <!-- Modal de Stripe -->
+        <div id="stripeModal" class="stripe-modal" style="display: none;">
+            <div class="stripe-modal-content">
+                <h2>Completar Pago</h2>
+                <div class="order-summary">
+                    <h3>Resumen del pedido: <span id="modalOrderCode"></span></h3>
+                    <p>Total: <span id="modalOrderTotal"></span>€</p>
+                </div>
+                <form id="payment-form">
+                    <div id="payment-element">
+                        <!-- Stripe Elements se insertará aquí -->
+                    </div>
+                    <div id="payment-message" class="hidden"></div>
+                    <button id="submit-payment" type="submit" class="btn btn-primary">
+                        <span id="button-text">Pagar</span>
+                        <div class="spinner hidden" id="spinner"></div>
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModalStripe()">
+                        Cancelar
+                    </button>
+                </form>
             </div>
         </div>
     </div>
