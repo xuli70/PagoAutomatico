@@ -80,7 +80,8 @@ if (!window.ENV?.STRIPE_PUBLIC_KEY) {
 
 // Helper para construir URLs de Supabase
 function getSupabaseUrl(endpoint) {
-    return `${SUPABASE_CONFIG.url}/rest/v1/${endpoint}`;
+    const baseUrl = SUPABASE_CONFIG.url.replace(/\/$/, '');
+    return `${baseUrl}/rest/v1/${endpoint}`;
 }
 
 // Helper para obtener headers de Supabase
