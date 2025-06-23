@@ -439,32 +439,46 @@ function cambiarCantidad(ticketId, delta) {
 }
 
 function actualizarCarrito() {
-    const itemsContainer = document.getElementById('cartItems');
-    const totalElement = document.getElementById('cartTotal');
-    const checkoutBtn = document.getElementById('checkoutBtn');
+    // Mostrar/ocultar zonas según si hay pedido activo
+    const cartZone = document.getElementById('cartZone');
+    const orderZone = document.getElementById('orderZone');
     
-    itemsContainer.innerHTML = '';
-    let total = 0;
-    
-    Object.entries(state.cart).forEach(([ticketId, quantity]) => {
-        const ticket = state.tickets.find(t => t.id == ticketId);
-        const subtotal = ticket.price * quantity;
-        total += subtotal;
+    if (state.activeOrder) {
+        cartZone.classList.add('hidden');
+        orderZone.classList.remove('hidden');
+        mostrarPedidoActivo();
+    } else {
+        cartZone.classList.remove('hidden');
+        orderZone.classList.add('hidden');
         
-        const itemEl = document.createElement('div');
-        itemEl.className = 'cart-item';
-        itemEl.innerHTML = `
-            <span>${quantity}x ${ticket.name}</span>
-            <span>${subtotal}€</span>
-        `;
-        itemsContainer.appendChild(itemEl);
-    });
-    
-    totalElement.textContent = `${total}€`;
-    checkoutBtn.disabled = total === 0;
-    
-    if (total === 0) {
-        itemsContainer.innerHTML = '<p style="text-align: center; color: #999;">Carrito vacío</p>';
+        // Actualizar el carrito normal
+        const itemsContainer = document.getElementById('cartItems');
+        const totalElement = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        
+        itemsContainer.innerHTML = '';
+        let total = 0;
+        
+        Object.entries(state.cart).forEach(([ticketId, quantity]) => {
+            const ticket = state.tickets.find(t => t.id == ticketId);
+            const subtotal = ticket.price * quantity;
+            total += subtotal;
+            
+            const itemEl = document.createElement('div');
+            itemEl.className = 'cart-item';
+            itemEl.innerHTML = `
+                <span>${quantity}x ${ticket.name}</span>
+                <span>${subtotal}€</span>
+            `;
+            itemsContainer.appendChild(itemEl);
+        });
+        
+        totalElement.textContent = `${total}€`;
+        checkoutBtn.disabled = total === 0;
+        
+        if (total === 0) {
+            itemsContainer.innerHTML = '<p style="text-align: center; color: #999;">Carrito vacío</p>';
+        }
     }
 }
 
@@ -491,11 +505,6 @@ function limpiarCarrito() {
 
 function mostrarPedidoActivo() {
     if (!state.activeOrder) return;
-    
-    // Cambiar vista
-    document.getElementById('mainView').classList.remove('active');
-    document.getElementById('orderView').classList.add('active');
-    document.getElementById('activeOrderBadge').classList.remove('hidden');
     
     // Mostrar código
     document.getElementById('orderCode').textContent = state.activeOrder.code;
@@ -564,25 +573,24 @@ function validarPedido(staffName) {
         localStorage.removeItem('active_order');
         state.activeOrder = null;
         
-        // Volver a inicio
-        volverAInicio();
+        // Actualizar vista
+        actualizarCarrito();
     }, 1000);
+}
+
+function cancelarPedido() {
+    if (confirm('¿Estás seguro de que quieres cancelar este pedido?')) {
+        localStorage.removeItem('active_order');
+        state.activeOrder = null;
+        actualizarCarrito();
+    }
 }
 
 function verificarPedidoActivo() {
     const savedOrder = localStorage.getItem('active_order');
     if (savedOrder) {
         state.activeOrder = JSON.parse(savedOrder);
-        mostrarPedidoActivo();
-    }
-}
-
-function volverAInicio() {
-    document.getElementById('orderView').classList.remove('active');
-    document.getElementById('mainView').classList.add('active');
-    
-    if (!state.activeOrder) {
-        document.getElementById('activeOrderBadge').classList.add('hidden');
+        actualizarCarrito();
     }
 }
 
@@ -597,7 +605,6 @@ document.getElementById('securityCode')?.addEventListener('input', function(e) {
 });
 
 function mostrarPanelAdmin() {
-    document.getElementById('orderView').classList.remove('active');
     document.getElementById('mainView').classList.remove('active');
     document.getElementById('adminView').classList.add('active');
     
@@ -608,12 +615,7 @@ function mostrarPanelAdmin() {
 
 function salirDeAdmin() {
     document.getElementById('adminView').classList.remove('active');
-    
-    if (state.activeOrder) {
-        document.getElementById('orderView').classList.add('active');
-    } else {
-        document.getElementById('mainView').classList.add('active');
-    }
+    document.getElementById('mainView').classList.add('active');
 }
 
 function cargarConfigAdmin() {
