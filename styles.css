@@ -46,7 +46,7 @@ body {
 
 /* Header */
 header {
-    background: white;
+    background: #2d3748;
     padding: 20px;
     border-radius: 12px;
     box-shadow: var(--shadow);
@@ -59,6 +59,7 @@ header {
 h1 {
     font-size: 24px;
     font-weight: 600;
+    color: white;
 }
 
 /* Botones */
@@ -143,7 +144,7 @@ h1 {
 }
 
 .ticket-card {
-    background: white;
+    background: #e0e7ff;
     border-radius: 12px;
     padding: 20px;
     text-align: center;
@@ -165,9 +166,9 @@ h1 {
 }
 
 .ticket-name {
-    font-weight: 600;
+    font-weight: 800;
     margin-bottom: 8px;
-    color: var(--dark-color);
+    color: #1e293b;
 }
 
 .ticket-price {
