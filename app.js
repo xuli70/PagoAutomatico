@@ -51,6 +51,64 @@ async function verificarConexionSupabase() {
     }
 }
 
+// Función de diagnóstico para verificar la conexión
+async function diagnosticarConexionSupabase() {
+    console.log('🔍 Diagnosticando conexión con Supabase...');
+    
+    try {
+        // 1. Verificar URL y headers
+        console.log('URL base:', SUPABASE_CONFIG.url);
+        console.log('Headers:', getSupabaseHeaders());
+        
+        // 2. Intentar leer la tabla staff
+        const response = await fetch(getSupabaseUrl('staff'), {
+            headers: getSupabaseHeaders()
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Conexión exitosa. Datos actuales:', data);
+        } else {
+            const error = await response.text();
+            console.error('❌ Error en la respuesta:', error);
+        }
+        
+        // 3. Intentar insertar un registro de prueba
+        const testStaff = {
+            id: 999,
+            name: 'Test',
+            color: 'blue',
+            active: false
+        };
+        
+        const insertResponse = await fetch(getSupabaseUrl('staff'), {
+            method: 'POST',
+            headers: getSupabaseHeaders(),
+            body: JSON.stringify(testStaff)
+        });
+        
+        if (insertResponse.ok) {
+            console.log('✅ Inserción de prueba exitosa');
+            
+            // Eliminar el registro de prueba
+            await fetch(getSupabaseUrl('staff?id=eq.999'), {
+                method: 'DELETE',
+                headers: getSupabaseHeaders()
+            });
+            console.log('✅ Eliminación de prueba exitosa');
+        } else {
+            const error = await insertResponse.text();
+            console.error('❌ Error en inserción de prueba:', error);
+        }
+        
+    } catch (error) {
+        console.error('❌ Error de conexión:', error);
+    }
+}
+
 // Sincronización principal
 async function sincronizarConSupabase() {
     const hayConexion = await verificarConexionSupabase();
@@ -196,25 +254,51 @@ async function guardarConfigEnSupabase(key, value) {
 // Guardar tickets en Supabase
 async function guardarTicketsEnSupabase() {
     try {
-        // Primero eliminar todos los tickets existentes
-        await fetch(getSupabaseUrl('tickets'), {
-            method: 'DELETE',
+        console.log('🔄 Intentando guardar tickets en Supabase...');
+        
+        // Obtener tickets existentes
+        const existingResponse = await fetch(getSupabaseUrl('tickets?select=id'), {
             headers: getSupabaseHeaders()
         });
         
-        // Insertar todos los tickets
-        const response = await fetch(getSupabaseUrl('tickets'), {
-            method: 'POST',
-            headers: getSupabaseHeaders(),
-            body: JSON.stringify(state.tickets)
-        });
+        if (existingResponse.ok) {
+            const existingTickets = await existingResponse.json();
+            const existingIds = existingTickets.map(t => t.id);
+            
+            // Eliminar los que ya no están
+            const idsToDelete = existingIds.filter(id => !state.tickets.find(t => t.id === id));
+            
+            if (idsToDelete.length > 0) {
+                for (const id of idsToDelete) {
+                    await fetch(getSupabaseUrl(`tickets?id=eq.${id}`), {
+                        method: 'DELETE',
+                        headers: getSupabaseHeaders()
+                    });
+                }
+            }
+        }
         
-        if (!response.ok) throw new Error('Error guardando tickets');
+        // Usar UPSERT para cada ticket
+        for (const ticket of state.tickets) {
+            const response = await fetch(getSupabaseUrl('tickets'), {
+                method: 'POST',
+                headers: {
+                    ...getSupabaseHeaders(),
+                    'Prefer': 'resolution=merge-duplicates'
+                },
+                body: JSON.stringify(ticket)
+            });
+            
+            if (!response.ok) {
+                const error = await response.text();
+                console.error('Error guardando ticket:', ticket.name, error);
+            }
+        }
         
         console.log('✅ Tickets guardados en Supabase');
         return true;
     } catch (error) {
-        console.error('Error guardando tickets en Supabase:', error);
+        console.error('❌ Error guardando tickets en Supabase:', error);
         return false;
     }
 }
@@ -222,29 +306,54 @@ async function guardarTicketsEnSupabase() {
 // Guardar personal en Supabase
 async function guardarPersonalEnSupabase() {
     try {
-        // Primero eliminar todo el personal existente
-        await fetch(getSupabaseUrl('staff'), {
-            method: 'DELETE',
+        console.log('🔄 Intentando guardar personal en Supabase...');
+        
+        // Primero, obtener todos los IDs existentes
+        const existingResponse = await fetch(getSupabaseUrl('staff?select=id'), {
             headers: getSupabaseHeaders()
         });
         
-        // Insertar todo el personal
-        const response = await fetch(getSupabaseUrl('staff'), {
-            method: 'POST',
-            headers: getSupabaseHeaders(),
-            body: JSON.stringify(state.staff)
-        });
+        if (existingResponse.ok) {
+            const existingStaff = await existingResponse.json();
+            const existingIds = existingStaff.map(s => s.id);
+            
+            // Eliminar solo los que ya no están en state.staff
+            const idsToDelete = existingIds.filter(id => !state.staff.find(s => s.id === id));
+            
+            if (idsToDelete.length > 0) {
+                for (const id of idsToDelete) {
+                    await fetch(getSupabaseUrl(`staff?id=eq.${id}`), {
+                        method: 'DELETE',
+                        headers: getSupabaseHeaders()
+                    });
+                }
+            }
+        }
         
-        if (!response.ok) throw new Error('Error guardando personal');
+        // Usar UPSERT para insertar o actualizar
+        for (const staff of state.staff) {
+            const response = await fetch(getSupabaseUrl('staff'), {
+                method: 'POST',
+                headers: {
+                    ...getSupabaseHeaders(),
+                    'Prefer': 'resolution=merge-duplicates'
+                },
+                body: JSON.stringify(staff)
+            });
+            
+            if (!response.ok) {
+                const error = await response.text();
+                console.error('Error guardando staff:', staff.name, error);
+            }
+        }
         
         console.log('✅ Personal guardado en Supabase');
         return true;
     } catch (error) {
-        console.error('Error guardando personal en Supabase:', error);
+        console.error('❌ Error guardando personal en Supabase:', error);
         return false;
     }
 }
-
 // Crear pedido en Supabase
 async function crearPedidoSupabase(orderData) {
     try {
@@ -1020,3 +1129,6 @@ function mostrarLoading(show) {
 
 // Event listener para el botón de checkout
 document.getElementById('checkoutBtn')?.addEventListener('click', procesarPagoStripe);
+
+// Agregar esta función al final del archivo para poder ejecutarla desde la consola
+window.diagnosticarSupabase = diagnosticarConexionSupabase;
