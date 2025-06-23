@@ -6,12 +6,12 @@
 }
 
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #10b981;
-    --danger-color: #ef4444;
-    --dark-color: #1f2937;
-    --light-gray: #f3f4f6;
-    --border-color: #e5e7eb;
+    --primary-color: #6366f1;
+    --secondary-color: #14b8a6;
+    --danger-color: #f43f5e;
+    --dark-color: #1e293b;
+    --light-gray: #f1f5f9;
+    --border-color: #e2e8f0;
     --shadow: 0 1px 3px rgba(0,0,0,0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
@@ -46,7 +46,7 @@ body {
 
 /* Header */
 header {
-    background: #2d3748;
+    background: #334155;
     padding: 20px;
     border-radius: 12px;
     box-shadow: var(--shadow);
@@ -83,55 +83,55 @@ h1 {
 }
 
 .btn-primary {
-    background: #1d4ed8;
+    background: #4f46e5;
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #1e40af;
+    background: #4338ca;
     transform: translateY(-1px);
 }
 
 .btn-success {
-    background: #059669;
+    background: #10b981;
     color: white;
 }
 
 .btn-success:hover:not(:disabled) {
-    background: #047857;
+    background: #059669;
     transform: translateY(-1px);
 }
 
 .btn-danger {
-    background: #dc2626;
+    background: #ef4444;
     color: white;
 }
 
 .btn-danger:hover:not(:disabled) {
-    background: #b91c1c;
+    background: #dc2626;
     transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: #4b5563;
+    background: #64748b;
     color: white;
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: #374151;
+    background: #475569;
     transform: translateY(-1px);
 }
 
 .btn-back {
     background: white;
-    color: #1d4ed8;
-    border: 2px solid #1d4ed8;
+    color: #4f46e5;
+    border: 2px solid #4f46e5;
     padding: 8px 16px;
     font-size: 14px;
 }
 
 .btn-back:hover {
-    background: #1d4ed8;
+    background: #4f46e5;
     color: white;
 }
 
@@ -162,13 +162,13 @@ h1 {
 
 .ticket-card.selected {
     border-color: var(--primary-color);
-    background: #eff6ff;
+    background: #ddd6fe;
 }
 
 .ticket-name {
     font-weight: 800;
     margin-bottom: 8px;
-    color: #1e293b;
+    color: #312e81;
 }
 
 .ticket-price {
@@ -189,9 +189,9 @@ h1 {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 2px solid #1d4ed8;
+    border: 2px solid #4f46e5;
     background: white;
-    color: #1d4ed8;
+    color: #4f46e5;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -202,7 +202,7 @@ h1 {
 }
 
 .quantity-btn:hover {
-    background: #1d4ed8;
+    background: #4f46e5;
     color: white;
 }
 
@@ -512,7 +512,7 @@ h1 {
     margin: 0;
     font-size: 20px;
     font-weight: 600;
-    color: #00897b;
+    color: #10b981;
 }
 
 /* Stripe Elements Container */
@@ -524,7 +524,7 @@ h1 {
 /* Formulario de pago en desarrollo */
 .dev-payment-form {
     background: #f0f8ff;
-    border: 2px dashed #007bff;
+    border: 2px dashed #6366f1;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -532,7 +532,7 @@ h1 {
 
 .dev-payment-form h4 {
     margin: 0 0 10px 0;
-    color: #007bff;
+    color: #6366f1;
 }
 
 .dev-payment-form ul {
@@ -567,8 +567,8 @@ h1 {
 
 .form-control:focus {
     outline: none;
-    border-color: #00897b;
-    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .form-row {
@@ -644,27 +644,27 @@ h1 {
 
 /* Colores para el personal - Mejorados para mejor contraste */
 .staff-color-green { 
-    background-color: #047857; 
+    background-color: #10b981; 
     color: white;
 }
 .staff-color-blue { 
-    background-color: #1e40af; 
+    background-color: #3b82f6; 
     color: white;
 }
 .staff-color-purple { 
-    background-color: #6d28d9; 
+    background-color: #8b5cf6; 
     color: white;
 }
 .staff-color-orange { 
-    background-color: #ea580c; 
+    background-color: #f59e0b; 
     color: white;
 }
 .staff-color-pink { 
-    background-color: #be185d; 
+    background-color: #ec4899; 
     color: white;
 }
 .staff-color-indigo { 
-    background-color: #4338ca; 
+    background-color: #6366f1; 
     color: white;
 }
 
@@ -789,7 +789,7 @@ h1 {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #4CAF50;
+    background: #10b981;
     color: white;
     padding: 10px 20px;
     border-radius: 4px;
@@ -802,5 +802,5 @@ h1 {
 }
 
 .sync-indicator.offline {
-    background: #ff9800;
+    background: #f59e0b;
 }
