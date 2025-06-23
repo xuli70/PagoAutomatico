@@ -3,8 +3,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Instalar Caddy (servidor web ligero)
-RUN apk add --no-cache caddy
+# Instalar Caddy (servidor web ligero) y wget para healthcheck
+RUN apk add --no-cache caddy wget
 
 # Copiar archivos de la aplicación
 COPY index.html ./
@@ -44,6 +44,10 @@ RUN echo -e ":${PORT:-8080} {\n\
 
 # Puerto 8080 es el estándar para Coolify
 EXPOSE 8080
+
+# Healthcheck simple para Coolify
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8080}/ || exit 1
 
 # Ejecutar el script de entrada
 CMD ["/app/entrypoint.sh"]
