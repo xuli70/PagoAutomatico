@@ -259,7 +259,7 @@ async function inicializarStripeElements(orderData) {
         
         if (!state.stripe || !elements) return;
         
-        setLoading(true);
+        setLoadingStripe(true);
         
         const { error } = await state.stripe.confirmPayment({
             elements,
@@ -270,7 +270,7 @@ async function inicializarStripeElements(orderData) {
         
         if (error) {
             showMessage(error.message);
-            setLoading(false);
+            setLoadingStripe(false);
         }
     });
 }
@@ -310,7 +310,7 @@ function simulaPagoDesarrollo(orderData) {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        setLoading(true);
+        setLoadingStripe(true);
         
         // Simular procesamiento
         setTimeout(() => {
@@ -323,7 +323,7 @@ function simulaPagoDesarrollo(orderData) {
             mostrarPedidoActivo();
             limpiarCarrito();
             
-            setLoading(false);
+            setLoadingStripe(false);
         }, 2000);
     });
 }
@@ -349,10 +349,14 @@ function cerrarModalStripe() {
     }
 }
 
-function setLoading(isLoading) {
+// Función específica para el loading del modal de Stripe
+function setLoadingStripe(isLoading) {
     const submitButton = document.getElementById('submit-payment');
     const buttonText = document.getElementById('button-text');
     const spinner = document.getElementById('spinner');
+    
+    // Verificar que los elementos existan antes de modificarlos
+    if (!submitButton || !buttonText || !spinner) return;
     
     if (isLoading) {
         submitButton.disabled = true;
@@ -367,6 +371,8 @@ function setLoading(isLoading) {
 
 function showMessage(messageText) {
     const messageContainer = document.getElementById('payment-message');
+    if (!messageContainer) return;
+    
     messageContainer.classList.remove('hidden');
     messageContainer.textContent = messageText;
     
