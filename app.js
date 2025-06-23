@@ -5,7 +5,8 @@ let state = {
     cart: {},
     activeOrder: null,
     config: { ...APP_CONFIG },
-    stripe: null
+    stripe: null,
+    checkoutSession: null
 };
 
 // Inicialización
@@ -15,6 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Inicializar Stripe
     if (window.ENV?.STRIPE_PUBLIC_KEY) {
         state.stripe = Stripe(window.ENV.STRIPE_PUBLIC_KEY);
+        console.log('✅ Stripe inicializado');
+    } else {
+        console.error('⚠️ STRIPE_PUBLIC_KEY no configurada');
     }
     
     // Cargar configuración desde localStorage o Supabase
@@ -29,16 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // === FUNCIONES DE SUPABASE ===
-
-// Crear tablas si no existen
-async function inicializarTablas() {
-    // Esta función sería ejecutada manualmente en Supabase
-    // Las tablas necesarias son:
-    // - orders (id, code, items, total, status, created_at, validated_at, validated_by)
-    // - config (key, value)
-    // - staff (id, name, color, active)
-    // - tickets (id, name, price, active)
-}
 
 // Cargar configuración
 async function cargarConfiguracion() {
@@ -127,22 +121,26 @@ async function procesarPagoStripe() {
     
     try {
         // Preparar items para Stripe
-        const items = Object.entries(state.cart).map(([ticketId, quantity]) => {
+        const lineItems = Object.entries(state.cart).map(([ticketId, quantity]) => {
             const ticket = state.tickets.find(t => t.id == ticketId);
             return {
-                name: ticket.name,
-                amount: ticket.price * 100, // Stripe usa centavos
-                currency: 'eur',
+                price_data: {
+                    currency: 'eur',
+                    product_data: {
+                        name: ticket.name,
+                        description: `Ticket ${ticket.name}`
+                    },
+                    unit_amount: Math.round(ticket.price * 100) // Stripe usa centavos
+                },
                 quantity: quantity
             };
         });
         
-        // Crear sesión de pago (esto normalmente se haría en el backend)
-        // Para esta demo, simularemos el proceso
+        // Generar código de pedido
         const orderCode = generarCodigoPedido();
         const total = calcularTotal();
         
-        // Guardar pedido temporalmente
+        // Crear pedido temporal
         const orderData = {
             code: orderCode,
             items: state.cart,
@@ -154,16 +152,22 @@ async function procesarPagoStripe() {
         const pedidoCreado = await crearPedidoSupabase(orderData);
         orderData.id = pedidoCreado.id;
         
-        // Guardar en localStorage
-        localStorage.setItem('active_order', JSON.stringify(orderData));
-        state.activeOrder = orderData;
+        // En un entorno real, deberías crear la sesión de Stripe en el backend
+        // Por ahora, simularemos el proceso con Stripe Checkout embebido
         
-        // Simular pago exitoso (en producción esto vendría de Stripe)
-        setTimeout(() => {
-            mostrarLoading(false);
-            mostrarPedidoActivo();
-            limpiarCarrito();
-        }, 2000);
+        // Crear sesión de checkout (esto normalmente se haría en el backend)
+        const session = await crearSesionCheckout(lineItems, orderData);
+        
+        if (session && session.url) {
+            // Guardar pedido antes de redirigir
+            localStorage.setItem('pending_order', JSON.stringify(orderData));
+            
+            // Redirigir a Stripe Checkout
+            window.location.href = session.url;
+        } else {
+            // Si no hay backend, mostrar el formulario de pago embebido
+            mostrarFormularioPagoEmbebido(orderData);
+        }
         
     } catch (error) {
         console.error('Error procesando pago:', error);
@@ -171,6 +175,229 @@ async function procesarPagoStripe() {
         alert('Error procesando el pago. Intenta nuevamente.');
     }
 }
+
+// Simulación de creación de sesión (en producción esto debe estar en el backend)
+async function crearSesionCheckout(lineItems, orderData) {
+    // En un entorno real, harías una llamada a tu backend:
+    // const response = await fetch('/api/create-checkout-session', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ lineItems, orderData })
+    // });
+    // return await response.json();
+    
+    // Por ahora, retornamos null para usar el formulario embebido
+    return null;
+}
+
+// Mostrar formulario de pago embebido (para modo desarrollo)
+function mostrarFormularioPagoEmbebido(orderData) {
+    mostrarLoading(false);
+    
+    // Crear modal para el formulario de pago
+    const modal = document.createElement('div');
+    modal.className = 'stripe-modal';
+    modal.innerHTML = `
+        <div class="stripe-modal-content">
+            <h2>Completar Pago</h2>
+            <div class="order-summary">
+                <h3>Resumen del pedido: ${orderData.code}</h3>
+                <p>Total: ${orderData.total}€</p>
+            </div>
+            <form id="payment-form">
+                <div id="payment-element">
+                    <!-- Stripe Elements se insertará aquí -->
+                </div>
+                <div id="payment-message" class="hidden"></div>
+                <button id="submit-payment" type="submit" class="btn btn-primary">
+                    <span id="button-text">Pagar ${orderData.total}€</span>
+                    <div class="spinner hidden" id="spinner"></div>
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalStripe()">
+                    Cancelar
+                </button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Inicializar Stripe Elements
+    inicializarStripeElements(orderData);
+}
+
+async function inicializarStripeElements(orderData) {
+    // En modo desarrollo, crear un PaymentIntent simulado
+    // En producción, esto debe venir del backend
+    const clientSecret = await obtenerClientSecret(orderData);
+    
+    if (!clientSecret) {
+        // Si no hay backend, simular el pago para desarrollo
+        simulaPagoDesarrollo(orderData);
+        return;
+    }
+    
+    // Opciones para Stripe Elements
+    const appearance = {
+        theme: 'stripe',
+        variables: {
+            colorPrimary: '#00897b',
+            fontFamily: 'system-ui, sans-serif',
+        }
+    };
+    
+    const elements = state.stripe.elements({ appearance, clientSecret });
+    
+    // Crear y montar el Payment Element
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+    
+    // Manejar el envío del formulario
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        if (!state.stripe || !elements) return;
+        
+        setLoading(true);
+        
+        const { error } = await state.stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: window.location.origin + '?payment=success&order=' + orderData.code,
+            },
+        });
+        
+        if (error) {
+            showMessage(error.message);
+            setLoading(false);
+        }
+    });
+}
+
+// Simulación para desarrollo
+function simulaPagoDesarrollo(orderData) {
+    const paymentElement = document.getElementById('payment-element');
+    paymentElement.innerHTML = `
+        <div class="dev-payment-form">
+            <h4>Modo Desarrollo - Tarjeta de Prueba</h4>
+            <p>Usa los siguientes datos de prueba:</p>
+            <ul>
+                <li><strong>Número:</strong> 4242 4242 4242 4242</li>
+                <li><strong>Fecha:</strong> Cualquier fecha futura</li>
+                <li><strong>CVC:</strong> Cualquier 3 dígitos</li>
+                <li><strong>ZIP:</strong> Cualquier código postal</li>
+            </ul>
+            <div class="form-group">
+                <label>Número de tarjeta</label>
+                <input type="text" id="card-number" placeholder="4242 4242 4242 4242" class="form-control">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>MM/AA</label>
+                    <input type="text" id="card-expiry" placeholder="12/25" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>CVC</label>
+                    <input type="text" id="card-cvc" placeholder="123" class="form-control">
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Manejar el envío en modo desarrollo
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        setLoading(true);
+        
+        // Simular procesamiento
+        setTimeout(() => {
+            // Guardar pedido como activo
+            localStorage.setItem('active_order', JSON.stringify(orderData));
+            state.activeOrder = orderData;
+            
+            // Cerrar modal y mostrar pedido
+            cerrarModalStripe();
+            mostrarPedidoActivo();
+            limpiarCarrito();
+            
+            setLoading(false);
+        }, 2000);
+    });
+}
+
+async function obtenerClientSecret(orderData) {
+    // En producción, esto debe venir del backend
+    // const response = await fetch('/api/create-payment-intent', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ amount: orderData.total * 100 })
+    // });
+    // const { clientSecret } = await response.json();
+    // return clientSecret;
+    
+    // En desarrollo, retornar null para usar simulación
+    return null;
+}
+
+function cerrarModalStripe() {
+    const modal = document.querySelector('.stripe-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function setLoading(isLoading) {
+    const submitButton = document.getElementById('submit-payment');
+    const buttonText = document.getElementById('button-text');
+    const spinner = document.getElementById('spinner');
+    
+    if (isLoading) {
+        submitButton.disabled = true;
+        spinner.classList.remove('hidden');
+        buttonText.classList.add('hidden');
+    } else {
+        submitButton.disabled = false;
+        spinner.classList.add('hidden');
+        buttonText.classList.remove('hidden');
+    }
+}
+
+function showMessage(messageText) {
+    const messageContainer = document.getElementById('payment-message');
+    messageContainer.classList.remove('hidden');
+    messageContainer.textContent = messageText;
+    
+    setTimeout(() => {
+        messageContainer.classList.add('hidden');
+        messageContainer.textContent = '';
+    }, 4000);
+}
+
+// Verificar resultado del pago al volver
+window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    const orderCode = urlParams.get('order');
+    
+    if (paymentStatus === 'success') {
+        // Recuperar pedido pendiente
+        const pendingOrder = localStorage.getItem('pending_order');
+        if (pendingOrder) {
+            state.activeOrder = JSON.parse(pendingOrder);
+            localStorage.setItem('active_order', pendingOrder);
+            localStorage.removeItem('pending_order');
+            
+            mostrarPedidoActivo();
+            limpiarCarrito();
+            
+            // Limpiar URL
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+    }
+});
 
 // === FUNCIONES DE UI ===
 
