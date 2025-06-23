@@ -1,49 +1,45 @@
 # Dockerfile optimizado para Coolify
-FROM node:18-alpine
+FROM nginx:alpine
 
-WORKDIR /app
+# Instalar dependencias necesarias
+RUN apk add --no-cache bash curl
 
-# Instalar Caddy (servidor web ligero)
-RUN apk add --no-cache caddy
+# Crear directorio de trabajo
+WORKDIR /usr/share/nginx/html
 
 # Copiar archivos de la aplicación
-COPY index.html ./
-COPY styles.css ./
-COPY config.js ./
-COPY app.js ./
-COPY entrypoint.sh ./
+COPY index.html .
+COPY styles.css .
+COPY app.js .
+COPY config.js .
 
-# Hacer ejecutable el script
-RUN chmod +x /app/entrypoint.sh
+# Crear el script entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Crear Caddyfile para servir la app en puerto 8080
-RUN echo -e ":${PORT:-8080} {\n\
-    root * /app\n\
-    file_server\n\
-    encode gzip\n\
-    try_files {path} /index.html\n\
-    \n\
-    # Headers de seguridad\n\
-    header {\n\
-        X-Content-Type-Options nosniff\n\
-        X-Frame-Options DENY\n\
-        X-XSS-Protection \"1; mode=block\"\n\
-        Referrer-Policy no-referrer-when-downgrade\n\
-        # CORS para Supabase y Stripe\n\
-        Access-Control-Allow-Origin *\n\
-        Access-Control-Allow-Methods \"GET, POST, PUT, DELETE, OPTIONS\"\n\
-        Access-Control-Allow-Headers \"Content-Type, Authorization, apikey\"\n\
-    }\n\
-    \n\
-    # Cache para assets estáticos\n\
-    @static {\n\
-        path *.css *.js *.jpg *.jpeg *.png *.gif *.ico *.svg\n\
-    }\n\
-    header @static Cache-Control \"public, max-age=3600\"\n\
-}" > /app/Caddyfile
+# Configuración de nginx para SPA
+RUN echo 'server { \
+    listen 80; \
+    server_name localhost; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+    \
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ { \
+        expires 1y; \
+        add_header Cache-Control "public, immutable"; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Puerto 8080 es el estándar para Coolify
-EXPOSE 8080
+# Exponer puerto 80
+EXPOSE 80
 
-# Ejecutar el script de entrada
-CMD ["/app/entrypoint.sh"]
+# Healthcheck para Coolify
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
+# Usar el entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
