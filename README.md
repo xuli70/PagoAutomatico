@@ -1,32 +1,17 @@
 # PagoAutomatico - Sistema de Tickets Unificado
 
-Sistema de pago con tickets integrado con Stripe para gestión de pedidos. Ahora con **interfaz unificada mejorada** que muestra todo en una sola ventana.
-
-## 🚀 Novedades - Vista Unificada Mejorada
-
-### Layout de 2 Columnas
-- **Panel Izquierdo**: Selección de tickets siempre visible
-- **Panel Derecho**: Estados dinámicos (Carrito → Pedido → Validación)
-- **Sin navegación**: Todo ocurre en la misma pantalla
-
-### Flujo Simplificado
-1. **Cliente**: Selecciona tickets con +/- en el panel izquierdo
-2. **Sistema**: Muestra carrito en tiempo real en el panel derecho
-3. **Pago**: Al pagar, el panel derecho cambia automáticamente al código
-4. **Personal**: Valida el pedido en la misma pantalla
+Sistema de pago con tickets integrado con Stripe para gestión de pedidos. Ahora con **interfaz unificada** que muestra todo en una sola ventana.
 
 ## 📱 Características
 
 ### Interfaz Unificada (🆕)
 - **Una sola ventana** que muestra:
-  - Selección de tickets siempre visible
-  - Estados dinámicos en el panel derecho
+  - Selección de tickets y carrito cuando no hay pedido activo
+  - Código del pedido y validación cuando hay un pedido activo
   - Transición fluida entre estados sin cambiar de pantalla
-  - Diseño responsive que se adapta a móviles
 
 ### Sistema de Tickets
 - Selección interactiva de productos/tickets
-- Controles de cantidad integrados (+/-)
 - Carrito de compra en tiempo real
 - Cálculo automático de totales
 
@@ -48,7 +33,7 @@ Sistema de pago con tickets integrado con Stripe para gestión de pedidos. Ahora
 
 ## 🚀 Instalación
 
-### Con Docker (Recomendado para Coolify)
+### Con Docker (Recomendado)
 
 ```bash
 docker build -t pagoautomatico .
@@ -58,18 +43,6 @@ docker run -p 80:80 \
   -e STRIPE_PUBLIC_KEY=tu_stripe_key \
   pagoautomatico
 ```
-
-### Configuración en Coolify
-
-1. **Conectar repositorio**: https://github.com/xuli70/PagoAutomatico
-2. **Configurar variables de entorno**:
-   ```
-   SUPABASE_URL=https://tu-proyecto.supabase.co
-   SUPABASE_ANON_KEY=tu-clave-anon-de-supabase
-   STRIPE_PUBLIC_KEY=pk_test_tu-clave-publica-de-stripe
-   ```
-3. **Puerto**: 80
-4. **Deploy automático**: Activado
 
 ### Manual
 
@@ -106,11 +79,10 @@ Usa cualquier fecha futura y CVC de 3 dígitos.
 
 ## 🔄 Flujo de Uso
 
-1. **Cliente selecciona tickets** → Panel izquierdo con controles +/-
-2. **Ve el carrito actualizado** → Panel derecho muestra items y total
-3. **Cliente paga** → Se genera código de pedido
-4. **Panel cambia automáticamente** → Muestra código grande y validación
-5. **Personal valida** → Introduce código de seguridad y confirma
+1. **Cliente selecciona tickets** → Se actualiza el carrito
+2. **Cliente paga** → Se genera código de pedido
+3. **Se muestra el código** → En la misma ventana
+4. **Personal valida** → Introduce código de seguridad y confirma
 
 ## 🎨 Personalización
 
