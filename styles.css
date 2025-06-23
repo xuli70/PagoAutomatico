@@ -436,6 +436,158 @@ h1 {
     display: none;
 }
 
+/* === STRIPE MODAL === */
+.stripe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.stripe-modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+}
+
+.stripe-modal-content h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.order-summary {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.order-summary h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.order-summary p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #00897b;
+}
+
+/* Stripe Elements Container */
+#payment-element {
+    margin-bottom: 20px;
+    min-height: 200px;
+}
+
+/* Formulario de pago en desarrollo */
+.dev-payment-form {
+    background: #f0f8ff;
+    border: 2px dashed #007bff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.dev-payment-form h4 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+}
+
+.dev-payment-form ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.dev-payment-form li {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #00897b;
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Botones del formulario de pago */
+#submit-payment {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#submit-payment:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+#payment-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    background: #fee;
+    color: #c00;
+}
+
+#payment-message.hidden {
+    display: none;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .tickets-grid {
@@ -450,6 +602,16 @@ h1 {
     .staff-config-item {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .stripe-modal-content {
+        padding: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }
 
