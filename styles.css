@@ -215,7 +215,7 @@ h1 {
 
 /* Sección del Carrito/Pedido */
 .cart-section {
-    background: white;
+    background: #d5d4b0;
     border-radius: 12px;
     padding: 10px;
     box-shadow: var(--shadow);
