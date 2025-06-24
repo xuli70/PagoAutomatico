@@ -215,26 +215,10 @@ h1 {
 .cart-section {
     background: white;
     border-radius: 12px;
-    padding: 20px;
+    padding: 10px;
     box-shadow: var(--shadow);
     position: sticky;
-    bottom: 20px;
-}
-/* Sección del Carrito/Pedido - Móvil */
-@media (max-width: 600px) {
-    .cart-section {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-        padding: 0;
-        box-shadow: none;
-        z-index: 9999;
-    }
+    top: 10px;
 }
 
 /* Zona del carrito */
