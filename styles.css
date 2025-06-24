@@ -218,7 +218,7 @@ h1 {
     padding: 10px;
     box-shadow: var(--shadow);
     position: sticky;
-    top: 10px;
+    bottom: 10px;
 }
 
 /* Zona del carrito */
