@@ -244,10 +244,10 @@ h1 {
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid var(--border-color);
-    font-size: 18px;      /* Tamaño de letra más grande */
+    font-size: 25px;      /* Tamaño de letra más grande */
     font-weight: bold;    /* Negrita */
     color: #da2f35;       /* Color personalizado */
-    background: #f9f9f9;  /* Fondo claro */
+    background: #dce6be;  /* Fondo claro */
     border-radius: 4px;   /* Bordes redondeados (opcional) */
 }
 
