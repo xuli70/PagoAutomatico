@@ -144,7 +144,7 @@ h1 {
 }
 
 .ticket-card {
-    background: #e0e7ff;
+    background: #e0f06f;
     border-radius: 12px;
     padding: 5px;
     text-align: center;
@@ -512,7 +512,7 @@ h1 {
 
 .order-summary h3 {
     margin: 0 0 10px 0;
-    font-size: 16px;
+    font-size: 25px;
     color: #666;
 }
 
