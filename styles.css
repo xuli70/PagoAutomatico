@@ -279,13 +279,13 @@ h1 {
 }
 
 .code-box {
-    font-size: 36px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 300;
     color: var(--primary-color);
     background: var(--light-gray);
-    padding: 20px;
+    padding: 0px;
     border-radius: 12px;
-    margin: 15px 0;
+    margin: 0px 0;
     letter-spacing: 2px;
 }
 
