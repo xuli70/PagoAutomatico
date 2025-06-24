@@ -290,8 +290,9 @@ h1 {
 }
 
 .instructions {
-    color: #6b7280;
+    color: #da2f35;
     font-size: 14px;
+    font-weight: bold;
 }
 
 .order-details {
