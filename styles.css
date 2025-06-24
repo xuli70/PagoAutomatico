@@ -146,7 +146,7 @@ h1 {
 .ticket-card {
     background: #e0e7ff;
     border-radius: 12px;
-    padding: 20px;
+    padding: 5px;
     text-align: center;
     box-shadow: var(--shadow);
     cursor: pointer;
@@ -169,6 +169,8 @@ h1 {
     font-weight: 800;
     margin-bottom: 8px;
     color: #312e81;
+    letter-spacing: 2px; /* Ajusta el valor según lo que quieras */
+    line-height: 20px; /* Hace que el texto se vea más alto, pero no lo corta */
 }
 
 .ticket-price {
