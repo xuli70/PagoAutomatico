@@ -46,8 +46,8 @@ body {
 
 /* Header */
 header {
-    background: #334155;
-    padding: 20px;
+    background: #d9d7c0;
+    padding: 11px;
     border-radius: 12px;
     box-shadow: var(--shadow);
     margin-bottom: 20px;
@@ -57,9 +57,9 @@ header {
 }
 
 h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    color: #d10f0f;
 }
 
 /* Botones */
