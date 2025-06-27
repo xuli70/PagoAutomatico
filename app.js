@@ -50,7 +50,7 @@ async function validatePassword() {
     const authModal = document.getElementById('authModal');
     
     const enteredPassword = appPassword.value;
-    const correctPassword = window.ENV?.APP_PASSWORD;
+    const correctPassword = state.config?.app_password;
     
     if (!correctPassword) {
         console.error('⚠️ APP_PASSWORD no configurada en las variables de entorno');
