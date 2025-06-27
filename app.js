@@ -114,26 +114,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Iniciando aplicación...');
     
-    // Inicializar Stripe
-    if (window.ENV?.STRIPE_PUBLIC_KEY) {
-        state.stripe = Stripe(window.ENV.STRIPE_PUBLIC_KEY);
-        console.log('✅ Stripe inicializado');
-    } else {
-        console.error('⚠️ STRIPE_PUBLIC_KEY no configurada');
-    }
-    
-    // Cargar configuración desde localStorage o Supabase
-    await cargarConfiguracion();
-    
-    // Renderizar interfaz
-    renderizarTickets();
-    actualizarCarrito();
-    
-    // Verificar si hay pedido activo
-    verificarPedidoActivo();
-    
-    // Configurar sincronización automática cada 30 segundos
-    setInterval(sincronizarConSupabase, 30000);
+    // Configurar autenticación
+    setupAuthentication();
 });
 
 // === FUNCIONES DE SUPABASE ===
@@ -995,7 +977,7 @@ function verificarPedidoActivo() {
 
 // Detectar código admin en el campo de seguridad
 document.getElementById('securityCode')?.addEventListener('input', function(e) {
-    if (e.target.value === state.config.adminCode) {
+    if (e.target.value === state.config.adminCode && state.authenticated) {
         e.target.value = '';
         mostrarPanelAdmin();
     }
@@ -1010,6 +992,7 @@ function mostrarPanelAdmin() {
         console.error("Acceso denegado: No autenticado");
         return;
     }
+    
     document.getElementById('mainView').classList.remove('active');
     document.getElementById('adminView').classList.add('active');
     
