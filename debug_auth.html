@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Variables de Entorno</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-box { background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 10px 0; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Debug - Variables de Entorno</h1>
+    
+    <div class="debug-box">
+        <h2>Estado del archivo env.js</h2>
+        <div id="envStatus">Verificando...</div>
+    </div>
+    
+    <div class="debug-box">
+        <h2>Variables de Entorno Disponibles</h2>
+        <div id="envVars">Cargando...</div>
+    </div>
+    
+    <div class="debug-box">
+        <h2>Específico: APP_PASSWORD</h2>
+        <div id="appPasswordStatus">Verificando...</div>
+    </div>
+    
+    <script src="env.js"></script>
+    <script>
+        // Verificar si env.js se cargó
+        const envStatus = document.getElementById('envStatus');
+        const envVars = document.getElementById('envVars');
+        const appPasswordStatus = document.getElementById('appPasswordStatus');
+        
+        if (typeof window.ENV === 'undefined') {
+            envStatus.innerHTML = '<span class="error">❌ El archivo env.js no se cargó o window.ENV no está definido</span>';
+            envVars.innerHTML = '<span class="error">No se pueden mostrar las variables porque window.ENV no existe</span>';
+            appPasswordStatus.innerHTML = '<span class="error">APP_PASSWORD no disponible - window.ENV no existe</span>';
+        } else {
+            envStatus.innerHTML = '<span class="success">✅ env.js cargado correctamente</span>';
+            
+            // Mostrar todas las variables (sin mostrar valores sensibles)
+            let varsHtml = '<ul>';
+            for (const [key, value] of Object.entries(window.ENV)) {
+                const displayValue = key.includes('KEY') || key.includes('PASSWORD') || key.includes('SECRET') 
+                    ? (value ? '***configurado***' : 'no configurado') 
+                    : value || 'no configurado';
+                varsHtml += `<li><strong>${key}:</strong> ${displayValue}</li>`;
+            }
+            varsHtml += '</ul>';
+            envVars.innerHTML = varsHtml;
+            
+            // Verificar APP_PASSWORD específicamente
+            if (window.ENV.APP_PASSWORD) {
+                if (window.ENV.APP_PASSWORD === '${APP_PASSWORD}' || window.ENV.APP_PASSWORD === '') {
+                    appPasswordStatus.innerHTML = '<span class="error">❌ APP_PASSWORD está configurado pero el valor no se está inyectando correctamente desde el entrypoint.sh</span>';
+                } else {
+                    appPasswordStatus.innerHTML = '<span class="success">✅ APP_PASSWORD está configurado correctamente</span>';
+                }
+            } else {
+                appPasswordStatus.innerHTML = '<span class="error">❌ APP_PASSWORD no está definido en window.ENV</span>';
+            }
+        }
+        
+        // Agregar información adicional
+        setTimeout(() => {
+            const additionalInfo = document.createElement('div');
+            additionalInfo.className = 'debug-box';
+            additionalInfo.innerHTML = `
+                <h2>Información Adicional del Navegador</h2>
+                <ul>
+                    <li><strong>User Agent:</strong> ${navigator.userAgent}</li>
+                    <li><strong>URL actual:</strong> ${window.location.href}</li>
+                    <li><strong>Hora de carga:</strong> ${new Date().toISOString()}</li>
+                </ul>
+            `;
+            document.body.appendChild(additionalInfo);
+        }, 1000);
+    </script>
+</body>
+</html>
