@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selecciona, Paga, Valida en Barra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -52,6 +56,7 @@
                         <span id="cartTotal">0€</span>
                     </div>
                     <button id="checkoutBtn" class="btn btn-primary" disabled>
+                        <i class="fas fa-credit-card"></i>
                         Pagar con tarjeta
                     </button>
                 </div>
@@ -85,6 +90,7 @@
                     </div>
 
                     <button class="btn btn-secondary" onclick="cancelarPedido()">
+                        <i class="fas fa-times"></i>
                         Cancelar pedido
                     </button>
                 </div>
@@ -95,7 +101,10 @@
         <div id="adminView" class="view">
             <header>
                 <h1>Panel de Administración</h1>
-                <button class="btn-back" onclick="salirDeAdmin()">← Salir</button>
+                <button class="btn-back" onclick="salirDeAdmin()">
+                    <i class="fas fa-arrow-left"></i>
+                    Salir
+                </button>
             </header>
 
             <div class="admin-container">
@@ -106,6 +115,7 @@
                         <!-- Configuración de tickets -->
                     </div>
                     <button onclick="guardarTickets()" class="btn btn-success">
+                        <i class="fas fa-save"></i>
                         Guardar Tickets
                     </button>
                 </section>
@@ -117,9 +127,11 @@
                         <!-- Configuración de personal -->
                     </div>
                     <button onclick="agregarPersonal()" class="btn btn-secondary">
-                        + Agregar Personal
+                        <i class="fas fa-user-plus"></i>
+                        Agregar Personal
                     </button>
                     <button onclick="guardarPersonal()" class="btn btn-success">
+                        <i class="fas fa-save"></i>
                         Guardar Personal
                     </button>
                 </section>
@@ -140,6 +152,7 @@
                         <input type="text" id="configSecurityCode" placeholder="2 dígitos">
                     </div>
                     <button onclick="guardarConfigGeneral()" class="btn btn-success">
+                        <i class="fas fa-save"></i>
                         Guardar Configuración
                     </button>
                 </section>
