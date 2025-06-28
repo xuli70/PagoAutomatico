@@ -1,3 +1,8 @@
+// Configuración de autenticación
+const AUTH_CONFIG = {
+    password: 'admin123' // Password hardcodeado para acceso simple
+};
+
 // Estado de la aplicación
 let state = {
     tickets: [],
@@ -7,12 +12,74 @@ let state = {
     config: { ...APP_CONFIG },
     stripe: null,
     checkoutSession: null,
-    lastSync: null // Para controlar sincronización
+    lastSync: null, // Para controlar sincronización
+    authenticated: false // Estado de autenticación
 };
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Iniciando aplicación...');
+// === FUNCIONES DE AUTENTICACIÓN ===
+
+// Configurar autenticación
+function setupAuthentication() {
+    const authModal = document.getElementById('authModal');
+    const authSubmit = document.getElementById('authSubmit');
+    const appPassword = document.getElementById('appPassword');
+    const authError = document.getElementById('authError');
+    
+    // Verificar si ya está autenticado (sesión guardada)
+    const sessionAuth = sessionStorage.getItem('app_authenticated');
+    if (sessionAuth === 'true') {
+        state.authenticated = true;
+        authModal.classList.remove('active');
+        initializeApp();
+        return;
+    }
+    
+    // Enfocar el campo de contraseña
+    appPassword.focus();
+    
+    // Manejar submit con Enter
+    appPassword.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            validatePassword();
+        }
+    });
+    
+    // Manejar click en botón
+    authSubmit.addEventListener('click', validatePassword);
+}
+
+// Validar contraseña
+function validatePassword() {
+    const appPassword = document.getElementById('appPassword');
+    const authError = document.getElementById('authError');
+    const authModal = document.getElementById('authModal');
+    
+    const enteredPassword = appPassword.value.trim();
+    
+    if (enteredPassword === AUTH_CONFIG.password) {
+        // Contraseña correcta
+        state.authenticated = true;
+        sessionStorage.setItem('app_authenticated', 'true');
+        authModal.classList.remove('active');
+        authError.style.display = 'none';
+        appPassword.value = '';
+        console.log('✅ Autenticación exitosa');
+        initializeApp();
+    } else {
+        // Contraseña incorrecta
+        authError.textContent = 'Contraseña incorrecta';
+        authError.style.display = 'block';
+        appPassword.value = '';
+        appPassword.focus();
+    }
+}
+
+// Inicializar aplicación después de autenticación
+async function initializeApp() {
+    // Mostrar la vista principal
+    document.getElementById('mainView').classList.add('active');
+    
+    console.log('🚀 Inicializando aplicación...');
     
     // Inicializar Stripe
     if (window.ENV?.STRIPE_PUBLIC_KEY) {
@@ -34,6 +101,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Configurar sincronización automática cada 30 segundos
     setInterval(sincronizarConSupabase, 30000);
+}
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Iniciando aplicación...');
+    
+    // Configurar autenticación
+    setupAuthentication();
 });
 
 // === FUNCIONES DE SUPABASE ===
@@ -902,6 +977,12 @@ document.getElementById('securityCode')?.addEventListener('input', function(e) {
 });
 
 function mostrarPanelAdmin() {
+    // Verificar autenticación
+    if (!state.authenticated) {
+        alert('Acceso denegado: Debe estar autenticado para acceder al panel de administración');
+        return;
+    }
+    
     document.getElementById('mainView').classList.remove('active');
     document.getElementById('adminView').classList.add('active');
     
