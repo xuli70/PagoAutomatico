@@ -1,5 +1,7 @@
-// PARTE 1: Cambios al inicio del archivo app.js
-// Reemplazar las líneas 1-13 con:
+// Configuración de autenticación
+const AUTH_CONFIG = {
+    password: 'admin123' // Password hardcodeado para acceso simple
+};
 
 // Estado de la aplicación
 let state = {
@@ -32,6 +34,9 @@ function setupAuthentication() {
         return;
     }
     
+    // Enfocar el campo de contraseña
+    appPassword.focus();
+    
     // Manejar submit con Enter
     appPassword.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -44,28 +49,21 @@ function setupAuthentication() {
 }
 
 // Validar contraseña
-async function validatePassword() {
+function validatePassword() {
     const appPassword = document.getElementById('appPassword');
     const authError = document.getElementById('authError');
     const authModal = document.getElementById('authModal');
     
-    const enteredPassword = appPassword.value;
-    const correctPassword = state.config?.app_password;
+    const enteredPassword = appPassword.value.trim();
     
-    if (!correctPassword) {
-        console.error('⚠️ APP_PASSWORD no configurada en las variables de entorno');
-        authError.textContent = 'Error de configuración. Contacte al administrador.';
-        authError.style.display = 'block';
-        return;
-    }
-    
-    if (enteredPassword === correctPassword) {
+    if (enteredPassword === AUTH_CONFIG.password) {
         // Contraseña correcta
         state.authenticated = true;
         sessionStorage.setItem('app_authenticated', 'true');
         authModal.classList.remove('active');
         authError.style.display = 'none';
         appPassword.value = '';
+        console.log('✅ Autenticación exitosa');
         initializeApp();
     } else {
         // Contraseña incorrecta
@@ -80,6 +78,8 @@ async function validatePassword() {
 async function initializeApp() {
     // Mostrar la vista principal
     document.getElementById('mainView').classList.add('active');
+    
+    console.log('🚀 Inicializando aplicación...');
     
     // Inicializar Stripe
     if (window.ENV?.STRIPE_PUBLIC_KEY) {
@@ -103,13 +103,6 @@ async function initializeApp() {
     setInterval(sincronizarConSupabase, 30000);
 }
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Iniciando aplicación...');
-    
-    // Configurar autenticación
-    setupAuthentication();
-});
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Iniciando aplicación...');
@@ -977,19 +970,16 @@ function verificarPedidoActivo() {
 
 // Detectar código admin en el campo de seguridad
 document.getElementById('securityCode')?.addEventListener('input', function(e) {
-    if (e.target.value === state.config.adminCode && state.authenticated) {
+    if (e.target.value === state.config.adminCode) {
         e.target.value = '';
         mostrarPanelAdmin();
     }
 });
 
-// PARTE 2: Cambios en la función mostrarPanelAdmin
-// Buscar la función mostrarPanelAdmin (alrededor de la línea 958) y reemplazar con:
-
 function mostrarPanelAdmin() {
-    // Verificar autenticación antes de mostrar panel admin
+    // Verificar autenticación
     if (!state.authenticated) {
-        console.error("Acceso denegado: No autenticado");
+        alert('Acceso denegado: Debe estar autenticado para acceder al panel de administración');
         return;
     }
     

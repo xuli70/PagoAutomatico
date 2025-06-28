@@ -9,21 +9,23 @@
 </head>
 <body>
     <div id="app">
-        <!-- Modal de autenticación -->
-        <div id="authModal" class="modal active">
-            <div class="modal-content auth-modal">
-                <h2>Acceso Restringido</h2>
-                <p>Por favor, ingrese la contraseña para acceder a la aplicación</p>
-                <input type="password" 
-                       id="appPassword" 
-                       placeholder="Contraseña"
-                       class="auth-input">
-                <button id="authSubmit" class="btn btn-primary">
-                    Acceder
-                </button>
-                <p id="authError" class="error-message" style="display: none;">
-                    Contraseña incorrecta
-                </p>
+        <!-- Modal de Autenticación -->
+        <div id="authModal" class="modal auth-modal active">
+            <div class="modal-content auth-content">
+                <div class="auth-header">
+                    <h2>Acceso al Sistema</h2>
+                    <p>Introduce la contraseña para continuar</p>
+                </div>
+                <div class="auth-form">
+                    <input type="password" 
+                           id="appPassword" 
+                           placeholder="Contraseña" 
+                           class="auth-input">
+                    <button id="authSubmit" class="btn btn-primary auth-btn">
+                        Entrar
+                    </button>
+                    <div id="authError" class="auth-error" style="display: none;"></div>
+                </div>
             </div>
         </div>
 
