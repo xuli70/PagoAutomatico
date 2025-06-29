@@ -6,12 +6,13 @@
 }
 
 :root {
-    --primary-color: #3B82F6;
-    --secondary-color: #10B981;
-    --accent-color: #8B5CF6;
-    --danger-color: #EF4444;
-    --warning-color: #F59E0B;
-    --dark-color: #0F172A;
+    /* Paleta optimizada para personas mayores - colores con mayor contraste */
+    --primary-color: #1D4ED8;  /* Azul más vibrante para mejor visibilidad */
+    --secondary-color: #059669; /* Verde con buen contraste */
+    --accent-color: #7C3AED;   /* Púrpura llamativo */
+    --danger-color: #DC2626;   /* Rojo fuerte */
+    --warning-color: #D97706;  /* Naranja cálido */
+    --dark-color: #1F2937;     /* Gris oscuro más suave que negro puro */
     --gray-900: #111827;
     --gray-800: #1F2937;
     --gray-700: #374151;
@@ -23,33 +24,68 @@
     --gray-100: #F3F4F6;
     --gray-50: #F9FAFB;
     --white: #FFFFFF;
-    --background: #F8FAFC;
-    --border-color: #E5E7EB;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --radius-sm: 4px;
-    --radius: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    --background: #FEFEFE;     /* Blanco ligeramente más cálido */
+    --border-color: #D1D5DB;   /* Bordes más visibles */
+    /* Sombras más prominentes para mejor definición */
+    --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    --shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.2), 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.25), 0 10px 15px -5px rgba(0, 0, 0, 0.1);
+    /* Bordes más redondeados para mejor percepción */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    /* Tamaños de fuente optimizados para personas mayores */
+    --font-size-xs: 16px;      /* Mínimo legible */
+    --font-size-sm: 18px;      /* Pequeño pero legible */
+    --font-size-base: 20px;    /* Base aumentado */
+    --font-size-lg: 24px;      /* Grande */
+    --font-size-xl: 28px;      /* Extra grande */
+    --font-size-2xl: 34px;     /* Muy grande */
+    --font-size-3xl: 40px;     /* Súper grande */
+    --font-size-4xl: 48px;     /* Gigante para elementos importantes */
+    /* Espaciado generoso para fácil navegación táctil */
+    --spacing-xs: 12px;
+    --spacing-sm: 20px;
+    --spacing-md: 32px;
+    --spacing-lg: 48px;
+    --spacing-xl: 64px;
+    /* Altura mínima para elementos táctiles */
+    --touch-target-min: 60px;  /* Recomendado para personas mayores */
+    --line-height-tight: 1.4;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--background);
-    color: var(--gray-900);
+    color: var(--dark-color);
     min-height: 100vh;
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
+    font-size: var(--font-size-base);  /* Tamaño base aumentado */
+    font-weight: 600;  /* Peso más fuerte para mejor legibilidad */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Optimizaciones adicionales para personas mayores */
+    letter-spacing: 0.02em;  /* Espaciado entre letras */
+    word-spacing: 0.05em;    /* Espaciado entre palabras */
 }
 
-/* Layout */
+/* Layout optimizado para personas mayores */
 #app {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 16px;
+    padding: var(--spacing-sm);
+    /* Espaciado adicional en móvil para evitar toques accidentales */
+}
+
+@media (max-width: 768px) {
+    #app {
+        padding: var(--spacing-md);  /* Más espacio en móvil */
+        padding-bottom: 120px;       /* Espacio para carrito fijo */
+    }
 }
 
 .view {
@@ -80,13 +116,23 @@ header {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: var(--font-size-2xl);  /* Título más grande */
     font-weight: 700;
-    color: var(--gray-900);
+    color: var(--dark-color);
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-sm);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: var(--font-size-xl);  /* Ajuste para móvil */
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 h1::before {
@@ -97,22 +143,36 @@ h1::before {
     font-size: 20px;
 }
 
-/* Botones */
+/* Botones optimizados para personas mayores */
 .btn {
-    padding: 10px 20px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: var(--touch-target-min);  /* Altura mínima táctil */
     border: none;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-lg);  /* Texto más grande */
+    font-weight: 700;  /* Más peso para mejor legibilidad */
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
+    /* Bordes más visibles para mejor definición */
+    border: 3px solid transparent;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        min-height: 70px;  /* Aún más alto en móvil */
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-md) var(--spacing-lg);
+        /* Más espacio entre botones */
+        margin: var(--spacing-xs) 0;
+    }
 }
 
 .btn::before {
@@ -197,25 +257,53 @@ h1::before {
     box-shadow: var(--shadow);
 }
 
-/* Grid de Tickets */
+/* Grid de Tickets optimizado para personas mayores */
 .tickets-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--spacing-sm);  /* Más espacio entre tickets */
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive para móviles - menos columnas, más espacio */
+@media (max-width: 768px) {
+    .tickets-grid {
+        grid-template-columns: repeat(2, 1fr);  /* Solo 2 columnas en móvil */
+        gap: var(--spacing-md);  /* Más espacio en móvil */
+    }
+}
+
+@media (max-width: 480px) {
+    .tickets-grid {
+        grid-template-columns: 1fr;  /* Una sola columna en pantallas muy pequeñas */
+        gap: var(--spacing-lg);
+    }
 }
 
 .ticket-card {
     background: var(--white);
-    border-radius: var(--radius-lg);
-    padding: 16px;
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-md);  /* Más padding */
     text-align: center;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-lg);  /* Sombra más prominente */
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid var(--border-color);
+    border: 4px solid var(--border-color);  /* Borde más grueso */
     position: relative;
     overflow: hidden;
+    min-height: 200px;  /* Altura mínima para fácil toque */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .ticket-card {
+        min-height: 220px;  /* Aún más alto en móvil */
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-sm);  /* Espacio entre cards */
+    }
 }
 
 .ticket-card::before {
@@ -248,21 +336,37 @@ h1::before {
 
 .ticket-name {
     font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--gray-900);
-    font-size: 14px;
-    letter-spacing: -0.02em;
-    line-height: 1.4;
+    margin-bottom: var(--spacing-sm);
+    color: var(--dark-color);
+    font-size: var(--font-size-lg);  /* Texto más grande */
+    letter-spacing: 0.01em;  /* Espaciado positivo para mejor legibilidad */
+    line-height: var(--line-height-relaxed);
+    text-transform: uppercase;  /* Mayúsculas para mejor visibilidad */
+}
+
+@media (max-width: 768px) {
+    .ticket-name {
+        font-size: var(--font-size-xl);  /* Aún más grande en móvil */
+        margin-bottom: var(--spacing-md);
+    }
 }
 
 .ticket-price {
-    font-size: 20px;
+    font-size: var(--font-size-3xl);  /* Precio muy grande y visible */
     color: var(--primary-color);
     font-weight: 800;
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap: 2px;
+    gap: var(--spacing-xs);
+    margin: var(--spacing-sm) 0;
+}
+
+@media (max-width: 768px) {
+    .ticket-price {
+        font-size: var(--font-size-4xl);  /* Gigante en móvil */
+        margin: var(--spacing-md) 0;
+    }
 }
 
 .ticket-price::before {
@@ -273,27 +377,44 @@ h1::before {
 }
 
 .ticket-quantity {
-    margin-top: 12px;
+    margin-top: var(--spacing-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-md);  /* Más espacio entre elementos */
+    padding: var(--spacing-sm) 0;
+}
+
+@media (max-width: 768px) {
+    .ticket-quantity {
+        gap: var(--spacing-lg);  /* Aún más espacio en móvil */
+        margin-top: var(--spacing-lg);
+    }
 }
 
 .quantity-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius);
-    border: 2px solid var(--primary-color);
+    width: var(--touch-target-min);  /* Botones táctiles más grandes */
+    height: var(--touch-target-min);
+    border-radius: var(--radius-lg);
+    border: 4px solid var(--primary-color);  /* Borde más grueso */
     background: var(--white);
     color: var(--primary-color);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: var(--font-size-2xl);  /* Números más grandes */
+    font-weight: 800;  /* Más peso */
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow);  /* Sombra para mejor definición */
+}
+
+@media (max-width: 768px) {
+    .quantity-btn {
+        width: 70px;  /* Aún más grande en móvil */
+        height: 70px;
+        font-size: var(--font-size-3xl);
+    }
 }
 
 .quantity-btn:hover {
@@ -303,23 +424,61 @@ h1::before {
 }
 
 .quantity-display {
-    font-weight: 700;
-    min-width: 30px;
-    font-size: 16px;
-    color: var(--gray-900);
+    font-weight: 800;
+    min-width: 60px;  /* Más ancho para mejor legibilidad */
+    font-size: var(--font-size-2xl);  /* Mucho más grande */
+    color: var(--dark-color);
+    background: var(--gray-100);  /* Fondo para destacar */
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 3px solid var(--border-color);
+    text-align: center;
 }
 
-/* Sección del Carrito/Pedido */
+@media (max-width: 768px) {
+    .quantity-display {
+        font-size: var(--font-size-3xl);  /* Gigante en móvil */
+        min-width: 80px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+/* Sección del Carrito/Pedido optimizada para personas mayores */
 .cart-section {
     background: var(--white);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-    position: sticky;
-    bottom: 16px;
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-xl);  /* Sombra más prominente */
+    position: fixed;  /* Fijo para mejor accesibilidad */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 4px solid var(--primary-color);  /* Borde azul para destacar */
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 100;
+    max-height: 50vh;  /* Máximo 50% de la pantalla */
+    overflow-y: auto;
+}
+
+@media (min-width: 769px) {
+    .cart-section {
+        position: sticky;  /* Sticky en desktop */
+        bottom: var(--spacing-md);
+        left: auto;
+        right: auto;
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: var(--radius-xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-section {
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;  /* Solo bordes superiores redondeados */
+        padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);  /* Sombra hacia arriba */
+    }
 }
 
 /* Zona del carrito */
@@ -360,11 +519,21 @@ h1::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
-    margin-bottom: 8px;
+    padding: var(--spacing-md);  /* Más padding */
+    margin-bottom: var(--spacing-sm);
     background: var(--gray-50);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     transition: all 0.2s ease;
+    border: 3px solid var(--border-color);  /* Borde para mejor definición */
+    min-height: var(--touch-target-min);  /* Altura mínima táctil */
+}
+
+@media (max-width: 768px) {
+    .cart-item {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        min-height: 80px;  /* Aún más alto en móvil */
+    }
 }
 
 .cart-item:hover {
@@ -372,23 +541,57 @@ h1::before {
 }
 
 .cart-item-name {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--gray-900);
+    font-weight: 700;
+    font-size: var(--font-size-lg);  /* Texto más grande */
+    color: var(--dark-color);
     flex: 1;
+    line-height: var(--line-height-tight);
+}
+
+@media (max-width: 768px) {
+    .cart-item-name {
+        font-size: var(--font-size-xl);  /* Aún más grande en móvil */
+    }
 }
 
 .cart-item-quantity {
-    font-weight: 500;
-    font-size: 14px;
-    color: var(--gray-600);
-    margin: 0 12px;
+    font-weight: 700;
+    font-size: var(--font-size-lg);  /* Cantidad más visible */
+    color: var(--primary-color);  /* Color azul para destacar */
+    margin: 0 var(--spacing-md);
+    background: var(--white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    border: 2px solid var(--primary-color);
+    min-width: 60px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .cart-item-quantity {
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-sm) var(--spacing-md);
+        min-width: 80px;
+    }
 }
 
 .cart-item-price {
-    font-weight: 700;
-    font-size: 14px;
+    font-weight: 800;
+    font-size: var(--font-size-lg);  /* Precio más visible */
     color: var(--primary-color);
+    background: var(--gray-100);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    min-width: 80px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .cart-item-price {
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-sm) var(--spacing-md);
+        min-width: 100px;
+    }
 }
 
 .cart-item:last-child {
@@ -399,17 +602,40 @@ h1::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    padding-top: 16px;
-    border-top: 2px solid var(--gray-200);
-    color: var(--gray-900);
+    font-size: var(--font-size-xl);  /* Total más grande */
+    font-weight: 800;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    border-top: 4px solid var(--primary-color);  /* Borde azul destacado */
+    color: var(--dark-color);
+    background: var(--gray-50);  /* Fondo sutil */
+    margin: var(--spacing-md) calc(-1 * var(--spacing-lg)) var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+    .cart-total {
+        font-size: var(--font-size-2xl);  /* Aún más grande en móvil */
+        padding: var(--spacing-lg);
+    }
 }
 
 .cart-total span:last-child {
     color: var(--primary-color);
-    font-size: 20px;
+    font-size: var(--font-size-2xl);  /* Precio total muy destacado */
+    background: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 3px solid var(--primary-color);
+    font-weight: 900;
+}
+
+@media (max-width: 768px) {
+    .cart-total span:last-child {
+        font-size: var(--font-size-3xl);  /* Gigante en móvil */
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
 }
 
 /* Zona del pedido activo */
@@ -438,16 +664,26 @@ h1::before {
 }
 
 .code-box {
-    font-size: 32px;
-    font-weight: 800;
+    font-size: var(--font-size-4xl);  /* Código gigante */
+    font-weight: 900;
     color: var(--primary-color);
     background: var(--white);
-    padding: 16px 24px;
-    border-radius: var(--radius-lg);
-    margin: 12px 0;
-    letter-spacing: 4px;
-    box-shadow: var(--shadow);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-radius: var(--radius-xl);
+    margin: var(--spacing-lg) 0;
+    letter-spacing: 8px;  /* Más espaciado */
+    box-shadow: var(--shadow-xl);
     font-family: 'Monaco', 'Courier New', monospace;
+    border: 4px solid var(--primary-color);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .code-box {
+        font-size: 60px;  /* Gigantesco en móvil */
+        padding: var(--spacing-2xl);
+        letter-spacing: 12px;
+    }
 }
 
 .instructions {
@@ -496,16 +732,27 @@ h1::before {
 
 #securityCode {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
+    padding: var(--spacing-lg);  /* Much más padding */
+    font-size: var(--font-size-2xl);  /* Texto muy grande */
     text-align: center;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius);
-    margin-bottom: 16px;
+    border: 4px solid var(--secondary-color);  /* Borde verde destacado */
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-lg);
     background: var(--white);
     transition: all 0.2s ease;
     font-family: 'Monaco', 'Courier New', monospace;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.3em;  /* Más espaciado */
+    font-weight: 800;
+    min-height: var(--touch-target-min);
+    box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 768px) {
+    #securityCode {
+        font-size: var(--font-size-3xl);  /* Gigante en móvil */
+        padding: var(--spacing-xl);
+        min-height: 80px;
+    }
 }
 
 #securityCode:focus {
@@ -516,21 +763,48 @@ h1::before {
 
 .staff-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-md);  /* Más espacio entre botones */
+}
+
+@media (max-width: 768px) {
+    .staff-buttons {
+        grid-template-columns: 1fr;  /* Un botón por fila en móvil */
+        gap: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .staff-buttons {
+        gap: var(--spacing-xl);  /* Aún más espacio en pantallas pequeñas */
+    }
 }
 
 .staff-btn {
-    padding: 12px 16px;
+    padding: var(--spacing-lg) var(--spacing-md);
     border: none;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-lg);  /* Texto más grande */
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: white;
     position: relative;
     overflow: hidden;
+    min-height: var(--touch-target-min);  /* Altura mínima táctil */
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-lg);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .staff-btn {
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-xl) var(--spacing-lg);
+        min-height: 80px;
+        margin-bottom: var(--spacing-md);
+    }
 }
 
 .staff-btn:hover {
@@ -576,14 +850,21 @@ h1::before {
 }
 
 .auth-header h2 {
-    color: var(--gray-900);
-    margin-bottom: 8px;
-    font-size: 28px;
-    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-3xl);  /* Título más grande */
+    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: var(--spacing-md);
+    line-height: var(--line-height-tight);
+}
+
+@media (max-width: 768px) {
+    .auth-header h2 {
+        font-size: var(--font-size-4xl);  /* Gigante en móvil */
+    }
 }
 
 .auth-header h2::before {
@@ -596,8 +877,17 @@ h1::before {
 
 .auth-header p {
     color: var(--gray-600);
-    margin-bottom: 32px;
-    font-size: 15px;
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-lg);  /* Texto explicativo más grande */
+    line-height: var(--line-height-relaxed);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .auth-header p {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-2xl);
+    }
 }
 
 .auth-form {
@@ -607,14 +897,26 @@ h1::before {
 }
 
 .auth-input {
-    padding: 16px 20px;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    font-size: 16px;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border: 4px solid var(--primary-color);  /* Borde azul destacado */
+    border-radius: var(--radius-xl);
+    font-size: var(--font-size-xl);  /* Texto mucho más grande */
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--gray-50);
+    background: var(--white);
     font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    min-height: var(--touch-target-min);
+    box-shadow: var(--shadow-lg);
+    letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+    .auth-input {
+        font-size: var(--font-size-2xl);  /* Gigante en móvil */
+        padding: var(--spacing-2xl);
+        min-height: 80px;
+    }
 }
 
 .auth-input:focus {
@@ -625,15 +927,28 @@ h1::before {
 }
 
 .auth-btn {
-    padding: 14px 32px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    font-size: var(--font-size-xl);  /* Botón más grande */
+    font-weight: 700;
+    letter-spacing: 0.02em;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-md);
+    min-height: var(--touch-target-min);
+    border-radius: var(--radius-xl);
+    text-transform: uppercase;
+    box-shadow: var(--shadow-xl);
+    border: 4px solid var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .auth-btn {
+        font-size: var(--font-size-2xl);  /* Gigante en móvil */
+        padding: var(--spacing-2xl);
+        min-height: 80px;
+    }
 }
 
 .auth-btn::after {
@@ -1018,87 +1333,83 @@ button:active,
     display: none;
 }
 
-/* Responsive */
+/* Responsive optimizado para personas mayores */
 @media (max-width: 768px) {
-    #app {
-        padding: 12px;
+    body {
+        font-size: var(--font-size-lg);  /* Texto base más grande en móvil */
     }
     
     header {
-        padding: 12px 16px;
-    }
-    
-    h1 {
-        font-size: 20px;
-    }
-    
-    .tickets-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-    }
-    
-    .ticket-card {
-        padding: 12px;
-    }
-    
-    .ticket-name {
-        font-size: 12px;
-    }
-    
-    .ticket-price {
-        font-size: 18px;
-    }
-    
-    .cart-section {
-        padding: 16px;
-    }
-    
-    .staff-buttons {
-        grid-template-columns: repeat(2, 1fr);
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin-bottom: var(--spacing-xl);
     }
     
     .admin-container {
-        padding: 16px;
+        padding: var(--spacing-md);
         grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
     }
     
     .ticket-config-item,
     .staff-config-item {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: var(--spacing-md);
+    }
+    
+    /* Asegurar espaciado adecuado entre todos los elementos */
+    .btn {
+        margin: var(--spacing-sm) 0;
+    }
+    
+    /* Mejorar legibilidad de textos pequeños */
+    .instructions {
+        font-size: var(--font-size-lg);
+        font-weight: 700;
     }
 }
 
+/* Pantallas muy pequeñas - optimización extrema para personas mayores */
 @media (max-width: 480px) {
-    .tickets-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-    
-    .ticket-card {
-        padding: 10px;
-    }
-    
-    .quantity-btn {
-        width: 24px;
-        height: 24px;
-        font-size: 16px;
+    :root {
+        /* Aumentar aún más los tamaños en pantallas muy pequeñas */
+        --font-size-base: 22px;
+        --font-size-lg: 26px;
+        --font-size-xl: 30px;
+        --font-size-2xl: 36px;
+        --font-size-3xl: 42px;
+        --font-size-4xl: 50px;
+        --spacing-lg: 36px;
+        --spacing-xl: 48px;
+        --spacing-2xl: 72px;
     }
     
     .stripe-modal-content {
-        padding: 20px;
+        padding: var(--spacing-lg);
+        width: 95%;
     }
     
     .form-row {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
     }
     
     .auth-content {
-        padding: 24px;
+        padding: var(--spacing-xl);
+        width: 95%;
     }
     
     .cart-items {
-        max-height: 120px;
+        max-height: 180px;  /* Más espacio para items */
+    }
+    
+    /* Asegurar que todos los elementos táctiles sean accesibles */
+    .btn, .quantity-btn, .staff-btn {
+        min-height: 70px;
+    }
+    
+    /* Separación extra entre secciones */
+    .admin-section {
+        margin-bottom: var(--spacing-2xl);
     }
 }
 
@@ -1112,7 +1423,10 @@ button:active,
     }
 }
 
-/* Colores para el personal - Paleta moderna con gradientes */
+/* =================================== */
+/* COLORES PARA EL PERSONAL OPTIMIZADOS */
+/* =================================== */
+/* Colores más vibrantes y contrastados para mejor visibilidad */
 .staff-color-green { 
     background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     color: white;
@@ -1144,7 +1458,9 @@ button:active,
     box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
 }
 
-/* Modal de Stripe */
+/* =================================== */
+/* MODAL DE STRIPE OPTIMIZADO */
+/* =================================== */
 .stripe-modal {
     display: flex;
     position: fixed;
@@ -1248,7 +1564,9 @@ button:active,
     gap: 1rem;
 }
 
-/* Indicador de sincronización */
+/* =================================== */
+/* INDICADOR DE SINCRONIZACIÓN */
+/* =================================== */
 .sync-indicator {
     position: fixed;
     bottom: 20px;
@@ -1267,4 +1585,145 @@ button:active,
 
 .sync-indicator.offline {
     background: #f59e0b;
+}
+
+/* =================================== */
+/* MEJORAS ADICIONALES PARA PERSONAS MAYORES */
+/* =================================== */
+
+/* Efecto de pulso para elementos importantes */
+@keyframes gentle-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.cart-total span:last-child {
+    animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+/* Efecto de resaltado para elementos activos */
+.ticket-card:active,
+.btn:active,
+.quantity-btn:active {
+    transform: scale(0.98);
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Indicadores visuales mejorados para el estado de selección */
+.ticket-card.selected::after {
+    content: '✓';  /* Checkmark */
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: 40px;
+    height: 40px;
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-lg);
+    font-weight: 900;
+    box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 768px) {
+    .ticket-card.selected::after {
+        width: 50px;
+        height: 50px;
+        font-size: var(--font-size-xl);
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+    }
+}
+
+/* Mejor contraste para elementos enfocados */
+*:focus {
+    outline: 4px solid var(--warning-color) !important;
+    outline-offset: 4px !important;
+    border-radius: var(--radius-lg) !important;
+}
+
+/* Indicador de carga más visible */
+.spinner {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+    border-color: var(--gray-300);
+    border-top-color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .spinner {
+        width: 80px;
+        height: 80px;
+        border-width: 8px;
+    }
+}
+
+/* Mejorar la visibilidad de los mensajes de error */
+.auth-error {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-width: 3px;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .auth-error {
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+}
+
+/* Asegurar que los iconos sean lo suficientemente grandes */
+h1::before,
+.auth-header h2::before,
+.validation-zone h3::before,
+.admin-section h2::before {
+    font-size: var(--font-size-xl) !important;
+}
+
+@media (max-width: 768px) {
+    h1::before,
+    .auth-header h2::before,
+    .validation-zone h3::before,
+    .admin-section h2::before {
+        font-size: var(--font-size-2xl) !important;
+    }
+}
+
+/* Separadores visuales más claros */
+.validation-zone {
+    border-top: 4px dashed var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Mejorar la legibilidad de los placeholders */
+::placeholder {
+    color: var(--gray-500) !important;
+    font-weight: 600 !important;
+    opacity: 0.8 !important;
+}
+
+/* Estados de hover más evidentes para personas mayores */
+.ticket-card:hover,
+.btn:hover:not(:disabled),
+.quantity-btn:hover,
+.staff-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    transition: all 0.3s ease;
+}
+
+/* Feedback táctil visual */
+@media (hover: none) and (pointer: coarse) {
+    /* Dispositivos táctiles - feedback inmediato */
+    .ticket-card:active,
+    .btn:active,
+    .quantity-btn:active {
+        background-color: var(--gray-100) !important;
+        transform: scale(0.95);
+        transition: all 0.1s ease;
+    }
 }
